@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/css/style.css">
+    <script src="/src/modules/create.ts" type="module"></script>
+    <title>Create account</title>
+</head>
+<body>
+    <div class="container">
+        <form>
+            <h1>Create Account</h1>
+            <label for="username"><b>Username</b></label>
+            <input type="text" id="username" placeholder="Enter Username" name="username" required>
+
+            <label for="email"><b>Email</b></label>
+            <input type="email" id="email" placeholder="Enter Email" name="email" required>
+
+            <label for="password"><b>Password</b></label>
+            <input type="password" id="password" placeholder="Enter Password" name="password" required>
+
+            <label for="confirm-password"><b>Confirm Password</b></label>
+            <input type="password" id="confirm-password" placeholder="Confirm Password" name="confirm-password" required>
+
+            <label for="profile-pic"><b>Choose a profile picture:</b></label>
+            <div class="profile-pics">
+                <label>
+                    <input type="radio" name="profile-pic" value="../images/arsenal.png">
+                    <img src="../images/arsenal.png">
+                </label>
+                <label>
+                    <input type="radio" name="profile-pic" value="../images/pool.png">
+                    <img src="../images/pool.png">
+                </label>
+                <label>
+                    <input type="radio" name="profile-pic" value="../images/manu.png">
+                    <img src="../images/manu.png">
+                </label>
+            </div>
+
+            <button type="submit">Create Account</button>
+        </form>
+    </div>
+    <li><a href="../index.html">Home</a></li>
+
+</body>
+</html>
