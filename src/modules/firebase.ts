@@ -2,7 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut as firebaseSignOut, deleteUser as firebaseDeleteUser } from 'firebase/auth';
-import { getDatabase, ref, set, get, push, update,child } from 'firebase/database';
+import { getDatabase, ref, set, get, push, update,child, remove } from 'firebase/database';
 
 
 
@@ -72,6 +72,41 @@ export const login = (email: string, password: string): Promise<void> => {
     });
   };
 
+
+//radera konto
+export const deleteUser = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error('User not logged in');
+  }
+
+  // Delete user data from the Realtime Database
+  const db = getDatabase();
+  const userRef = ref(db, `users/${user.uid}`);
+  await remove(userRef);
+
+  // Delete the user's account
+  try {
+    await firebaseDeleteUser(user);
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+  // logga ut
+  export const signOut = async () => {
+    const auth = getAuth();
+  
+    try {
+      await firebaseSignOut(auth);
+    } catch (error) {
+      throw error;
+    }
+  };
 
 
 export {createUserWithEmailAndPassword}

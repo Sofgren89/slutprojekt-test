@@ -1,9 +1,11 @@
 //mainpage
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getDatabase, ref, onValue, set, push , get} from 'firebase/database';
+import { getDatabase, ref, onValue, set, push , get, child} from 'firebase/database';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './firebase'; 
+import { deleteUser } from './firebase'; 
+import { signOut } from './firebase'; 
 
 
 const myUpdateButton = document.querySelector('#my-update-btn');
@@ -58,7 +60,7 @@ const main = () => {
 
           })
           
-          
+          displayUserPosts()
         }
         
     })
@@ -109,28 +111,56 @@ window.addEventListener('load', main);
 //visa inlägg
 
 
+const displayUserPosts = () => {
+  const db = getDatabase();
+  const postsRef = ref(db, 'posts');
+  const usersRef = ref(db, 'users');
 
-const postRef = ref(db, `posts/`);
-onValue(postRef, (snapshot) => {
-  const posts = snapshot.val();
+  onValue(postsRef, async (snapshot) => {
+    const posts = snapshot.val();
+    const postContent = document.querySelector('.posts') as HTMLElement;
+    postContent.innerHTML = '';
 
-  const postContent = document.querySelector('.posts') as HTMLElement
-  postContent.innerHTML = '';
-  
-  for (const postId in posts) {
-    const users = snapshot.val()
-    console.log(users)
-    const post = posts[postId];
-    const content = post.content;
-    // display the content on your page
-    const postElement = document.createElement('div');
-    postElement.textContent = content;
-    postContent.appendChild(postElement);
+    for (const postId in posts) {
+      const post = posts[postId];
+      const content = post.content;
+      const postUserId = post.userId;
+
+      const userSnapshot = await get(child(usersRef, postUserId));
+      const user = userSnapshot.val();
+
+
+      if (user) { 
+      const postElement = document.createElement('div');
+      postElement.className = 'post-item';
+      postElement.innerHTML = `
+        <h3 class="postName">${user.username}</h3>
+        <p class="postContent">${content}</p>
+      `;
+      
+      postContent.appendChild(postElement);
+      
+    }
+  }
+  });
+};
+//radera
+const delButton = document.getElementById('delete') as HTMLElement
+delButton.addEventListener('click', async () => {
+  try {
+    await deleteUser();
+    alert('User account and data deleted');
+    // Redirect or update the UI as needed
+  } catch (error) {
+    console.error('Error deleting user and data:', error);
   }
 });
 
-
-
+//logga ut
+const logOutBtn = document.getElementById('loggOut') as HTMLElement
+logOutBtn.addEventListener('click', async () => {
+  await signOut()
+});
 
 
 
