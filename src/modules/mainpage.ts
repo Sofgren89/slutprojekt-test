@@ -1,31 +1,15 @@
 //mainpage
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getDatabase, ref, onValue, set, push , get, child} from 'firebase/database';
+import { getDatabase, ref, onValue, set, push, get, child } from 'firebase/database';
 import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from './firebase'; 
-import { deleteUser } from './firebase'; 
-import { signOut } from './firebase'; 
+import { firebaseConfig } from './firebase';
+import { deleteUser } from './firebase';
+import { signOut } from './firebase';
 
 
 const myUpdateButton = document.querySelector('#my-update-btn');
-// const outputDiv = document.querySelector('#output'); 
 
-// function getTextFromInputElement(input: HTMLInputElement): string {
-//   return input.value;
-// }
-
-
-// myUpdateButton?.addEventListener('click', () => {
-//   const text = getTextFromInputElement(myUpdate);
-
-//   const p = document.createElement('p');
-//   p.textContent = text;
-//   if (outputDiv) {
-//     outputDiv.appendChild(p);
-//   }
-
-// });
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getDatabase(firebaseApp);
 const auth = getAuth(firebaseApp);
@@ -41,29 +25,29 @@ interface Post {
 
 const main = () => {
 
-    onAuthStateChanged(auth, (user) => {
-        console.log('auth state changed', user);
-        if (user) {
-          const userId = user.uid;
-          const db = getDatabase();
-          const userRef = ref(db, `users/${userId}`);
+  onAuthStateChanged(auth, (user) => {
+    console.log('auth state changed', user);
+    if (user) {
+      const userId = user.uid;
+      const db = getDatabase();
+      const userRef = ref(db, `users/${userId}`);
 
-          onValue(userRef, (snapshot) =>{
-            const userData = snapshot.val();
-            console.log('userData', userData);
-            console.log(userData.profilePicture);
-            console.log(userData.username);
-            const username = document.querySelector('#username') as HTMLElement
-            const pic = document.querySelector('#pic') as HTMLImageElement
-            username.innerHTML = userData.username
-            pic.src = userData.profilePicture
+      onValue(userRef, (snapshot) => {
+        const userData = snapshot.val();
+        console.log('userData', userData);
+        console.log(userData.profilePicture);
+        console.log(userData.username);
+        const username = document.querySelector('#username') as HTMLElement
+        const pic = document.querySelector('#pic') as HTMLImageElement
+        username.innerHTML = userData.username
+        pic.src = userData.profilePicture
 
-          })
-          
-          displayUserPosts()
-        }
-        
-    })
+      })
+
+      displayUserPosts()
+    }
+
+  })
 }
 //knappfunktion
 myUpdateButton?.addEventListener('click', async (event) => {
@@ -77,9 +61,9 @@ myUpdateButton?.addEventListener('click', async (event) => {
 })
 //Skapa inlägg
 
-const createPost =  () => {
+const createPost = () => {
   const myUpdate = document.querySelector('#my-update') as HTMLInputElement
-  onAuthStateChanged(auth, async (user)  => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       const productsRef = ref(db, 'users');
       const productsSnapshot = await get(productsRef);
@@ -88,18 +72,17 @@ const createPost =  () => {
 
       const uid = user.uid
       const userRef = ref(db, `posts/`);
-      const newPost= push (userRef)
+      const newPost = push(userRef)
       // push(userRef, content);
-   set(newPost,{
-    userId : uid, 
-    content : myUpdate.value,
-    
-   
-   })
+      set(newPost, {
+        userId: uid,
+        content: myUpdate.value,
+
+
+      })
     }
   });
 }
-
 
 
 
@@ -130,20 +113,40 @@ const displayUserPosts = () => {
       const user = userSnapshot.val();
 
 
-      if (user) { 
-      const postElement = document.createElement('div');
-      postElement.className = 'post-item';
-      postElement.innerHTML = `
+      if (user) {
+        const postElement = document.createElement('div');
+        postElement.className = 'post-item';
+        postElement.innerHTML = `
         <h3 class="postName">${user.username}</h3>
         <p class="postContent">${content}</p>
       `;
-      
-      postContent.appendChild(postElement);
-      
+
+        postContent.appendChild(postElement);
+
+      }
     }
-  }
   });
 };
+
+//visa andra användare
+
+const displayUsers = async () => {
+  const db = getDatabase();
+  const usersRef = ref(db, 'users');
+  const usersSnapshot = await get(usersRef);
+  const usersData = usersSnapshot.val();
+
+  Object.values(usersData).forEach(user => {
+   console.log()
+    console.log(user);
+  });
+}
+
+
+displayUsers()
+
+
+
 //radera
 const delButton = document.getElementById('delete') as HTMLElement
 delButton.addEventListener('click', async () => {
@@ -157,7 +160,7 @@ delButton.addEventListener('click', async () => {
 });
 
 //logga ut
-const logOutBtn = document.getElementById('loggOut') as HTMLElement
+const logOutBtn = document.getElementById('logOut') as HTMLElement
 logOutBtn.addEventListener('click', async () => {
   await signOut()
 });
