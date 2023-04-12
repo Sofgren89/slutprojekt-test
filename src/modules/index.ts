@@ -1,6 +1,10 @@
-import { login } from "./firebase";
+//login
+
+import { login } from "./firebase"; 
+// import { getUsers } from "./mainpage";
 
 const formElement = document.querySelector('form');
+
 
 if (formElement) {
   formElement.addEventListener('submit', async (event) => {
@@ -10,9 +14,9 @@ if (formElement) {
     console.log(`Email: ${email}, Password: ${password}`);
     
     try {
-      console.log('Attempting login...');
+      // console.log('Attempting login...');
       await login(email, password);
-      console.log('Login successful, redirecting...');
+      // console.log('Login successful, redirecting...');
       window.location.assign('./html/mainpage.html');
     } catch (error) {
       console.error('Error during login:', error);
@@ -24,7 +28,8 @@ if (formElement) {
 }
 
 
-  
+
+// getUsers()
 
 
 

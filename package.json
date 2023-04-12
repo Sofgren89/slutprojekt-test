@@ -1,5 +1,5 @@
 {
-  "name": "parcel-boilerplate-mall---kopia",
+  "name": "slutprojekt-test",
   "version": "1.0.0",
   "scripts": {
     "dev": "parcel serve ./src/index.html",
@@ -21,6 +21,6 @@
   "directories": {
     "doc": "docs"
   },
-  "main": "index.js",
+  
   "description": ""
 }

@@ -1,8 +1,11 @@
 // Import the functions you need from the SDKs you need
-import { getAnalytics } from "firebase/analytics";
+
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut as firebaseSignOut, deleteUser as firebaseDeleteUser } from 'firebase/auth';
 import { getDatabase, ref, set, get, push, update,child } from 'firebase/database';
+
+
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,9 +25,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
 const database = getDatabase(app);
+console.log(database)
 const auth = getAuth();
+
+
 
 // import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 // import { getDatabase, push, ref, set } from "firebase/database";
@@ -37,15 +43,15 @@ export const createAccount = async (
   profilePicture: string
 ) => {
   try {
-    console.log('Logging in...');
+    // console.log('Logga in...');
     // Create user with email and password
     const auth = getAuth(app);
-    const { user } = await createUserWithEmailAndPassword(auth, email, password);
-
+    const  userCredential  = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
     // Add user data to database
     const db = getDatabase(app);
-    const usersRef = ref(db, "users");
-    const userRef = push(usersRef);
+    const userRef = ref(db, `users/${user.uid}`);
+  
     await set(userRef, {
       
       username,
@@ -66,4 +72,9 @@ export const login = (email: string, password: string): Promise<void> => {
     });
   };
 
+
+
 export {createUserWithEmailAndPassword}
+export {firebaseConfig}
+
+

@@ -1,3 +1,5 @@
+//create account
+
 import { createAccount } from "./firebase";
 
 document.querySelector('form')?.addEventListener('submit', (event) => {
