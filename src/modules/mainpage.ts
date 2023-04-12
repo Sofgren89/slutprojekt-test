@@ -25,10 +25,13 @@ interface Post {
 
 const main = () => {
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     console.log('auth state changed', user);
     if (user) {
-      const userId = user.uid;
+      const userIdFromUrl = getUserIdFromUrl();
+
+      // If a userId is present in the URL, use it instead of the current user's ID
+      const userId = userIdFromUrl ? userIdFromUrl : user.uid;
       const db = getDatabase();
       const userRef = ref(db, `users/${userId}`);
 
@@ -45,6 +48,34 @@ const main = () => {
       })
 
       displayUserPosts()
+
+
+      interface User {
+        username: string;
+        email: string;
+        profilePicture: string;
+      }
+      
+      
+        const database = getDatabase();
+        const usersRef = ref(database, 'users');
+        const usersSnapshot = await get(usersRef);
+        const usersData = usersSnapshot.val();
+        console.log(usersData)
+        const userContainer = document.querySelector("#user-container") as HTMLElement
+      
+        (Object.entries(usersData) as [string, User][]).forEach(([userId, user]) => {
+          const typedUser = user as User;
+          console.log(typedUser.username);
+          const p = document.createElement('p')
+          p.setAttribute('data-user-id', userId);
+          p.innerHTML = typedUser.username
+          userContainer.append(p)
+
+          p.addEventListener('click', () => {
+            window.location.href = `./profile.html?userId=${userId}`;
+          });
+        })
     }
 
   })
@@ -95,6 +126,7 @@ window.addEventListener('load', main);
 
 
 const displayUserPosts = () => {
+  const userIdFromUrl = getUserIdFromUrl();
   const db = getDatabase();
   const postsRef = ref(db, 'posts');
   const usersRef = ref(db, 'users');
@@ -106,44 +138,45 @@ const displayUserPosts = () => {
 
     for (const postId in posts) {
       const post = posts[postId];
+
+      // If a userId is present in the URL, only display posts from that user
+      if (userIdFromUrl && post.userId !== userIdFromUrl) {
+        continue;
+      }
+
       const content = post.content;
       const postUserId = post.userId;
 
       const userSnapshot = await get(child(usersRef, postUserId));
       const user = userSnapshot.val();
 
-
       if (user) {
         const postElement = document.createElement('div');
         postElement.className = 'post-item';
         postElement.innerHTML = `
-        <h3 class="postName">${user.username}</h3>
-        <p class="postContent">${content}</p>
-      `;
+          <h3 class="postName">${user.username}</h3>
+          <p class="postContent">${content}</p>
+        `;
 
         postContent.appendChild(postElement);
-
       }
     }
   });
 };
 
+
 //visa andra användare
 
-const displayUsers = async () => {
-  const db = getDatabase();
-  const usersRef = ref(db, 'users');
-  const usersSnapshot = await get(usersRef);
-  const usersData = usersSnapshot.val();
+// Add this interface at the top of your file
 
-  Object.values(usersData).forEach(user => {
-   console.log()
-    console.log(user);
-  });
+
+function getUserIdFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('userId');
 }
 
 
-displayUsers()
+
 
 
 
@@ -151,18 +184,21 @@ displayUsers()
 const delButton = document.getElementById('delete') as HTMLElement
 delButton.addEventListener('click', async () => {
   try {
-    await deleteUser();
-    alert('User account and data deleted');
-    // Redirect or update the UI as needed
+    await deleteUser().then(() => {
+      window.location.assign('../index.html');
+    })
+    
   } catch (error) {
     console.error('Error deleting user and data:', error);
   }
 });
 
 //logga ut
-const logOutBtn = document.getElementById('logOut') as HTMLElement
+const logOutBtn = document.getElementById('logOut') as HTMLElement;
 logOutBtn.addEventListener('click', async () => {
-  await signOut()
+  await signOut().then(() => {
+    window.location.assign('../index.html');
+  });
 });
 
 
