@@ -1,3 +1,6 @@
+
+
+
 .container {
     display: flex;
     justify-content: center;
@@ -16,6 +19,8 @@
   h1 {
     text-align: center;
     margin-bottom: 20px;
+    color:#3e8e41;
+   
   }
   
   label {
@@ -66,7 +71,8 @@
   
   h1 {
     text-align: center;
-    margin-bottom: 20px;
+   
+    margin-bottom: 10px;
   }
   
   label {
@@ -127,4 +133,130 @@
 
 .post-item{
   border-bottom: 2px solid black;
+}
+
+/*buttons and links*/
+
+#createbtn{
+  background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    
+}
+
+#createbtn:hover {
+  background-color: #3e8e41;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+#my-update-btn{
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+#my-update-btn:hover{
+
+  background-color: #3e8e41;
+}
+
+#otherstatus{
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  width: 175px;
+}
+
+#delete{
+  background-color:red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#delete:hover{
+background-color: crimson;
+}
+
+#logOut{
+  background-color:#4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#logOut:hover{
+background-color: #3e8e41;
+}
+
+/*pictures */
+
+
+#pic{
+  display: block;
+  margin: 0 auto;
+width: 100px;
+ margin-bottom: 10px;
+}
+
+/*status/user */
+
+
+
+
+#newform{
+  display: block;
+  margin: 0 auto;
+  background-color: grey;
+  margin-bottom: 10px;
+}
+
+.posts{
+  background-color:#4CAF50;
+  color:white;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  width: 500px;
+  
+}
+
+#user-container{
+  color: red;
+  font-size: 24px;
+  font-weight: bold;
+float: right;
+  
+}
+
+.hidden{
+  display: none;
 }

@@ -30,7 +30,7 @@ const main = () => {
     if (user) {
       const userIdFromUrl = getUserIdFromUrl();
 
-      // If a userId is present in the URL, use it instead of the current user's ID
+      
       const userId = userIdFromUrl ? userIdFromUrl : user.uid;
       const db = getDatabase();
       const userRef = ref(db, `users/${userId}`);
@@ -84,9 +84,7 @@ const main = () => {
 myUpdateButton?.addEventListener('click', async (event) => {
   event.preventDefault();
 
-  // const post: Post = {
-  //   content: myUpdate.value
-  // };
+  
 
   createPost()
 })
@@ -104,7 +102,7 @@ const createPost = () => {
       const uid = user.uid
       const userRef = ref(db, `posts/`);
       const newPost = push(userRef)
-      // push(userRef, content);
+      
       set(newPost, {
         userId: uid,
         content: myUpdate.value,
@@ -139,7 +137,7 @@ const displayUserPosts = () => {
     for (const postId in posts) {
       const post = posts[postId];
 
-      // If a userId is present in the URL, only display posts from that user
+      
       if (userIdFromUrl && post.userId !== userIdFromUrl) {
         continue;
       }
@@ -167,7 +165,7 @@ const displayUserPosts = () => {
 
 //visa andra användare
 
-// Add this interface at the top of your file
+
 
 
 function getUserIdFromUrl() {

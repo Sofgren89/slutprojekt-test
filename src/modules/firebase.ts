@@ -32,8 +32,7 @@ const auth = getAuth();
 
 
 
-// import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-// import { getDatabase, push, ref, set } from "firebase/database";
+
 
 
 export const createAccount = async (
